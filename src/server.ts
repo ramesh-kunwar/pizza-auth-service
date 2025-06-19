@@ -3,11 +3,3 @@ function welcome(name: string) {
 }
 const name1 = "Ramesh";
 welcome(name1);
-
-const user = {
-    name: "Ramesh",
-};
-
-const fName = user.name;
-
-console.log(fName);
