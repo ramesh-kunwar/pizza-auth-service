@@ -4,7 +4,7 @@ import { HttpError } from "http-errors";
 
 const app = express();
 
-app.get("/ping", async (req, res) => {
+app.get("/", async (req, res) => {
     res.json({
         msg: "Pong",
     });
