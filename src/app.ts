@@ -6,7 +6,7 @@ const app = express();
 
 app.get("/", async (req, res) => {
     res.json({
-        msg: "Pong",
+        msg: " Wecome From Auth Service ",
     });
 });
 
