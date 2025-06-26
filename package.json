@@ -4,12 +4,14 @@
     "main": "index.js",
     "scripts": {
         "test": "jest --watch --runInBand",
-        "dev": "nodemon src/server.ts",
+        "dev": "cross-env NODE_ENV=dev nodemon src/server.ts",
         "format:fix": "prettier . --write",
         "format:check": "prettier . --check",
         "lint:check": "eslint .",
         "lint:fix": "eslint . --fix",
-        "prepare": "husky"
+        "prepare": "husky",
+        "start": "ts-node src/index.ts",
+        "typeorm": "typeorm-ts-node-commonjs"
     },
     "repository": {
         "type": "git",
@@ -28,6 +30,7 @@
         "@types/http-errors": "^2.0.5",
         "@types/jest": "^30.0.0",
         "@types/node": "^24.0.3",
+        "cross-env": "^7.0.3",
         "eslint": "^9.29.0",
         "globals": "^16.2.0",
         "husky": "^9.1.7",
@@ -52,9 +55,9 @@
         "dotenv": "^16.5.0",
         "express": "^5.1.0",
         "http-errors": "^2.0.0",
-        "pg": "^8.16.2",
+        "pg": "^8.14.1",
         "reflect-metadata": "^0.2.2",
-        "typeorm": "^0.3.25",
+        "typeorm": "0.3.25",
         "winston": "^3.17.0"
     }
 }
