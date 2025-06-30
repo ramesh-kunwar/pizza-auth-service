@@ -7,9 +7,7 @@ import { User } from "../entity/User";
 const router = express.Router();
 
 const userRepository = AppDataSource.getRepository(User);
-
 const userService = new UserService(userRepository);
 const authController = new AuthController(userService);
-// router.post("/register", authController.reigister);
-router.post("/register", (req, res) => authController.reigister(req, res)); // done in this way to solve binding issue
+router.post("/register", (req, res) => authController.register(req, res)); // done in this way to solve binding issue
 export default router;

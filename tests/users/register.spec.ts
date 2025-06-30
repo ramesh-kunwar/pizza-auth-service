@@ -73,7 +73,6 @@ describe("POST /auth/register", () => {
 
             // 3. Assert
 
-            // 4.
             const userRepository = connection.getRepository(User);
             const users = await userRepository.find();
 
