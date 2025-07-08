@@ -8,4 +8,9 @@ export default checkSchema({
         notEmpty: true,
         trim: true,
     },
+    firstName: {
+        errorMessage: "First Name Is Required",
+        notEmpty: true,
+        trim: true,
+    },
 });
