@@ -13,4 +13,9 @@ export default checkSchema({
         notEmpty: true,
         trim: true,
     },
+    lastName: {
+        errorMessage: "Last Name Is Required",
+        notEmpty: true,
+        trim: true,
+    },
 });
