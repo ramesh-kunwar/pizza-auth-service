@@ -41,6 +41,22 @@ export class AuthController {
 
             this.logger.info("User has been registered", { id: user.id });
 
+            const accessToken = "ldasfasfas";
+            const refreshToken = "ldasfasfas";
+
+            res.cookie("accessToken", accessToken, {
+                domain: "localost",
+                sameSite: "strict",
+                maxAge: 1000 * 60 * 60, // 1h
+                httpOnly: true,
+            });
+            res.cookie("refreshToken", refreshToken, {
+                domain: "localost",
+                sameSite: "strict",
+                maxAge: 1000 * 60 * 60 * 24 * 365, // 1year
+                httpOnly: true,
+            });
+
             res.status(201).json({
                 id: user.id,
             });

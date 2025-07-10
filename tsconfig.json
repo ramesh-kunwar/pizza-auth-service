@@ -114,4 +114,8 @@
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true
     }
+    // "include": [
+    //     // "src/**/*"
+    //     // "tests/**/*" // Add this line
+    // ]
 }
