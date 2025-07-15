@@ -38,4 +38,13 @@ export class UserService {
             throw error;
         }
     }
+
+    async findByEmail(email: string) {
+        const user = this.userRepository.findOne({
+            where: {
+                email,
+            },
+        });
+        return user;
+    }
 }
