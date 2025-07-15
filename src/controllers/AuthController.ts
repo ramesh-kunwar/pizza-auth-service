@@ -26,6 +26,7 @@ export class AuthController {
 
         if (!result.isEmpty()) {
             res.status(400).json({ errors: result.array() });
+            return;
         }
 
         const { firstName, lastName, email, password } = req.body;
@@ -89,6 +90,7 @@ export class AuthController {
 
         if (!result.isEmpty()) {
             res.status(400).json({ errors: result.array() });
+            return;
         }
 
         const { email, password } = req.body;

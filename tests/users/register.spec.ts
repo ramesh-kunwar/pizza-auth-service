@@ -347,7 +347,7 @@ describe("POST /auth/register", () => {
             const userRepository = connection.getRepository(User);
             const users = await userRepository.find();
 
-            const user = users[1];
+            const user = users[0];
 
             expect(user.email).toBe("ramesh@gmail.com");
         });
