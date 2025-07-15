@@ -113,7 +113,7 @@ export class AuthController {
 
             // compare password
 
-            const passwordMatch = this.credentialService.comparePassword(
+            const passwordMatch = await this.credentialService.comparePassword(
                 password,
                 user.password,
             );

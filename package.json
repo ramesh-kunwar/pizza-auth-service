@@ -3,8 +3,8 @@
     "version": "1.0.0",
     "main": "index.js",
     "scripts": {
-        "test": "cross-env NODE_ENV=test jest --watch --runInBand",
-        "dev": "cross-env NODE_ENV=test nodemon src/server.ts",
+        "test": "cross-env NODE_ENV=dev jest --watch --runInBand",
+        "dev": "cross-env NODE_ENV=dev nodemon src/server.ts",
         "format:fix": "prettier . --write",
         "format:check": "prettier . --check",
         "lint:check": "eslint .",
