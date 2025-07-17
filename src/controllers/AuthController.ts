@@ -1,6 +1,6 @@
 import { NextFunction, Response } from "express";
 import { UserService } from "../services/userService";
-import { RegisterUserRequest } from "../types";
+import { AuthRequest, RegisterUserRequest } from "../types";
 import { Logger } from "winston";
 import { validationResult } from "express-validator";
 import { JwtPayload } from "jsonwebtoken";
@@ -165,5 +165,15 @@ export class AuthController {
             next(error);
             return;
         }
+    }
+
+    async self(req: AuthRequest, res: Response) {
+        const user = await this.userService.findById(Number(req.auth.sub));
+
+        // user?.password = null;
+        res.status(200).json({
+            ...user,
+            password: undefined,
+        });
     }
 }
