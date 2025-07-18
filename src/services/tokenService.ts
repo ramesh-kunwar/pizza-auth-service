@@ -43,14 +43,17 @@ export class TokenService {
     }
 
     async persistRefreshToken(user: User) {
-        const refreshTokenRepository =
-            AppDataSource.getRepository(RefreshToken);
-
         const MS_IN_YEAR = 1000 * 60 * 60 * 24 * 356; // 1year (no consideration of leap year)
         const newRefreshToken = this.refreshTokenRepository.save({
             user: user,
             expiresAt: new Date(Date.now() + MS_IN_YEAR),
         });
         return newRefreshToken;
+    }
+
+    async deleteRefreshToken(tokenId: number) {
+        return await this.refreshTokenRepository.delete({
+            id: tokenId,
+        });
     }
 }
