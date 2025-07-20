@@ -18,6 +18,9 @@ export class User {
     @Column()
     password: string;
 
+    @Column()
+    role: string;
+
     @ManyToOne(() => Tenant) // many users to one tenant
     tenant: Tenant;
 }
