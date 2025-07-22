@@ -3,8 +3,8 @@ import { AppDataSource } from "../../src/config/data-source";
 import request from "supertest";
 import app from "../../src/app";
 import { Tenant } from "../../src/entity/Tenant";
-import { ROLSE } from "../../src/constants";
 import createJWKSMock from "mock-jwks";
+import { Roles } from "../../src/constants";
 
 describe("POST /tenants", () => {
     let connection: DataSource;
@@ -23,7 +23,7 @@ describe("POST /tenants", () => {
 
         adminToken = jwks.token({
             sub: "1",
-            role: ROLSE.ADMIN,
+            role: Roles.ADMIN,
         });
     });
 
@@ -77,6 +77,28 @@ describe("POST /tenants", () => {
                 .post("/tenants")
                 .send(tenantData);
             expect(response.statusCode).toBe(401);
+
+            const tenantRepository = connection.getRepository(Tenant);
+            const tenants = await tenantRepository.find();
+
+            expect(tenants).toHaveLength(0);
+        });
+
+        it("should return 403 if user is not an admin", async () => {
+            const managerToken = jwks.token({
+                sub: "1",
+                role: Roles.MANAGER,
+            });
+            const tenantData = {
+                name: "Tenant name",
+                address: "Tenant address",
+            };
+
+            const response = await request(app)
+                .post("/tenants")
+                .set("Cookie", [`accessToken=${managerToken}`])
+                .send(tenantData);
+            expect(response.statusCode).toBe(403);
 
             const tenantRepository = connection.getRepository(Tenant);
             const tenants = await tenantRepository.find();
