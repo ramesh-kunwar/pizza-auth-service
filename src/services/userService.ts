@@ -3,8 +3,8 @@ import { Repository } from "typeorm";
 import { User } from "../entity/User";
 import { UserData } from "../types";
 import createHttpError from "http-errors";
-import { ROLSE } from "../constants";
 import bcrypt from "bcrypt";
+import { Roles } from "../constants";
 
 export class UserService {
     constructor(private userRepository: Repository<User>) {}
@@ -27,7 +27,7 @@ export class UserService {
                 lastName,
                 email,
                 password: hashedPassword,
-                role: ROLSE.CUSTOMER,
+                role: Roles.CUSTOMER,
             });
             return user;
         } catch (err) {

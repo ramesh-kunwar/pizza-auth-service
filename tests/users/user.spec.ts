@@ -4,7 +4,7 @@ import { AppDataSource } from "../../src/config/data-source";
 import app from "../../src/app";
 import createJWKSMock from "mock-jwks";
 import { User } from "../../src/entity/User";
-import { ROLSE } from "../../src/constants";
+import { Roles } from "../../src/constants";
 
 describe("POST /auth/self", () => {
     let connection: DataSource;
@@ -33,7 +33,7 @@ describe("POST /auth/self", () => {
         it("should return 200 status code.", async () => {
             const accessToken = jwks.token({
                 sub: "1",
-                role: ROLSE.CUSTOMER,
+                role: Roles.CUSTOMER,
             });
 
             //
@@ -58,7 +58,7 @@ describe("POST /auth/self", () => {
 
             const data = await userRepository.save({
                 ...userData,
-                role: ROLSE.CUSTOMER,
+                role: Roles.CUSTOMER,
             });
 
             // generate token
@@ -91,7 +91,7 @@ describe("POST /auth/self", () => {
 
             const data = await userRepository.save({
                 ...userData,
-                role: ROLSE.CUSTOMER,
+                role: Roles.CUSTOMER,
             });
 
             // generate token
@@ -126,7 +126,7 @@ describe("POST /auth/self", () => {
 
             await userRepository.save({
                 ...userData,
-                role: ROLSE.CUSTOMER,
+                role: Roles.CUSTOMER,
             });
 
             const response = await request(app).get("/auth/self").send();

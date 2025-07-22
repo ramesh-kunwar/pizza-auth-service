@@ -4,7 +4,7 @@ import request from "supertest";
 import { AppDataSource } from "../../src/config/data-source";
 import app from "../../src/app";
 import { User } from "../../src/entity/User";
-import { ROLSE } from "../../src/constants";
+import { Roles } from "../../src/constants";
 import { isJwt } from "../../src/utils";
 
 describe("POST /auth/login", () => {
@@ -39,7 +39,7 @@ describe("POST /auth/login", () => {
             await userRepository.save({
                 ...userData,
                 password: hashedPassword,
-                role: ROLSE.CUSTOMER,
+                role: Roles.CUSTOMER,
             });
 
             // Act
@@ -86,7 +86,7 @@ describe("POST /auth/login", () => {
             await userRepository.save({
                 ...userData,
                 password: hashedPassword,
-                role: ROLSE.CUSTOMER,
+                role: Roles.CUSTOMER,
             });
 
             // Act

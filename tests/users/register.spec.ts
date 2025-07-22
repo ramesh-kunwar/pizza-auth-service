@@ -3,7 +3,7 @@ import app from "../../src/app";
 import { DataSource } from "typeorm";
 import { AppDataSource } from "../../src/config/data-source";
 import { User } from "../../src/entity/User";
-import { ROLSE } from "../../src/constants";
+import { Roles } from "../../src/constants";
 import { isJwt } from "../../src/utils";
 import { RefreshToken } from "../../src/entity/RefreshToken";
 // import { isJwt } from "../utils/index";
@@ -125,7 +125,7 @@ describe("POST /auth/register", () => {
             const repository = connection.getRepository(User);
             const users = await repository.find();
             expect(users[0]).toHaveProperty("role");
-            expect(users[0].role).toBe(ROLSE.CUSTOMER);
+            expect(users[0].role).toBe(Roles.CUSTOMER);
         });
 
         it("should store hashed password in the database", async () => {
@@ -158,7 +158,7 @@ describe("POST /auth/register", () => {
             const userRepository = connection.getRepository(User);
             await userRepository.save({
                 ...userData,
-                role: ROLSE.CUSTOMER,
+                role: Roles.CUSTOMER,
             });
 
             // 2. Act
