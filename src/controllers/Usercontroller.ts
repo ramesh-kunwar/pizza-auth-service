@@ -79,4 +79,21 @@ export class UserController {
             next(error);
         }
     }
+
+    async deleteById(req: Request, res: Response, next: NextFunction) {
+        const userId = req.params.id;
+
+        if (isNaN(Number(userId))) {
+            next(createHttpError(400, "Invalid user params"));
+            return;
+        }
+
+        this.logger.info("Error while fetching user.", { id: userId });
+
+        try {
+            await this.userService.deleteById(Number(userId));
+        } catch (error) {
+            next(error);
+        }
+    }
 }

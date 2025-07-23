@@ -40,4 +40,12 @@ router.get("/users/:id", (req, res, next) =>
     usercontroller.getOne(req, res, next),
 );
 
+router.delete(
+    "/users/:id",
+
+    authenticate,
+    canAccess([Roles.ADMIN]),
+    (req, res, next) => usercontroller.deleteById(req, res, next),
+);
+
 export default router;
