@@ -36,4 +36,8 @@ router.patch(
     },
 );
 
+router.get("/users/:id", (req, res, next) =>
+    usercontroller.getOne(req, res, next),
+);
+
 export default router;

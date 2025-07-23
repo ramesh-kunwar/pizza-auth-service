@@ -74,4 +74,12 @@ export class UserService {
             throw err;
         }
     }
+
+    async getOne(userId: number) {
+        return await this.userRepository.findOne({
+            where: {
+                id: userId,
+            },
+        });
+    }
 }
