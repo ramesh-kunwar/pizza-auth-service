@@ -4,7 +4,6 @@ import { User } from "../entity/User";
 import { UserData } from "../types";
 import createHttpError from "http-errors";
 import bcrypt from "bcrypt";
-import { Roles } from "../constants";
 
 export class UserService {
     constructor(private userRepository: Repository<User>) {}
@@ -54,5 +53,9 @@ export class UserService {
                 id: id,
             },
         });
+    }
+
+    async getAll() {
+        return await this.userRepository.find();
     }
 }
