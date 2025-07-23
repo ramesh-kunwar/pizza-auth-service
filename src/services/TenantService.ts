@@ -12,4 +12,12 @@ export class TenantService {
     async getAll() {
         return this.tenantRepository.find();
     }
+
+    async getById(tenantId: number) {
+        return this.tenantRepository.findOne({
+            where: {
+                id: tenantId,
+            },
+        });
+    }
 }

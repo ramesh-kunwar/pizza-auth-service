@@ -2,6 +2,7 @@ import { NextFunction, Response, Request } from "express";
 import { TenantService } from "../services/TenantService";
 import { CreateTenantRequest } from "../types";
 import { Logger } from "winston";
+import createHttpError from "http-errors";
 export class TenantController {
     constructor(
         private tenantService: TenantService,
@@ -31,6 +32,27 @@ export class TenantController {
             res.json(tenants);
         } catch (err) {
             next(err);
+        }
+    }
+
+    async getOne(req: Request, res: Response, next: NextFunction) {
+        try {
+            const tenantId = req.params.id;
+            if (isNaN(Number(tenantId))) {
+                next(createHttpError(400, "Invalid tenant id"));
+                return;
+            }
+            const tenant = await this.tenantService.getById(Number(tenantId));
+
+            if (!tenant) {
+                next(createHttpError(404, "Tenant Id Doesn't Exist"));
+                return;
+            }
+
+            this.Logger.info("Tenant has been fetched", { id: tenant.id });
+            res.json(tenant);
+        } catch (error) {
+            next(error);
         }
     }
 }
