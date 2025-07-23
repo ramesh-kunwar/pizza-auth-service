@@ -3,6 +3,7 @@ import { UserService } from "../services/userService";
 import { CreateUserRequest } from "../types";
 import { Roles } from "../constants";
 import { Logger } from "winston";
+import createHttpError from "http-errors";
 
 export class UserController {
     constructor(
@@ -32,6 +33,29 @@ export class UserController {
 
             this.logger.info("All users have been fetched");
             res.json(users);
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    async update(req: Request, res: Response, next: NextFunction) {
+        const { firstName, lastName, role } = req.body;
+
+        const userId = req.params.id;
+
+        if (isNaN(Number(userId))) {
+            next(createHttpError(400, "Invalid user params"));
+            return;
+        }
+
+        this.logger.debug("Request for updating a user", req.body);
+
+        try {
+            await this.userService.update(Number(userId), {
+                firstName,
+                lastName,
+                role,
+            });
         } catch (error) {
             next(error);
         }
