@@ -8,4 +8,8 @@ export class TenantService {
         //
         return this.tenantRepository.save(tenantData);
     }
+
+    async getAll() {
+        return this.tenantRepository.find();
+    }
 }
