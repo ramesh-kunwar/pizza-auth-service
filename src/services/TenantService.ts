@@ -20,4 +20,8 @@ export class TenantService {
             },
         });
     }
+
+    async deleteById(tenantId: number) {
+        return this.tenantRepository.delete(tenantId);
+    }
 }

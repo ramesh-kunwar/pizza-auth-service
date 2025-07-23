@@ -55,4 +55,26 @@ export class TenantController {
             next(error);
         }
     }
+
+    async destroy(req: Request, res: Response, next: NextFunction) {
+        try {
+            const tenantId = req.params.id;
+
+            if (isNaN(Number(tenantId))) {
+                next(createHttpError(400, "Invalid tenant id"));
+                return;
+            }
+
+            const tenant = await this.tenantService.deleteById(
+                Number(tenantId),
+            );
+
+            this.Logger.info("Tenant has been deleted", {
+                id: Number(tenantId),
+            });
+            res.json(tenant);
+        } catch (error) {
+            next(error);
+        }
+    }
 }
