@@ -5,6 +5,7 @@ import app from "../../src/app";
 import createJWKSMock from "mock-jwks";
 import { User } from "../../src/entity/User";
 import { Roles } from "../../src/constants";
+import { Tenant } from "../../src/entity/Tenant";
 
 describe("POST /users", () => {
     let connection: DataSource;
@@ -36,12 +37,19 @@ describe("POST /users", () => {
                 role: Roles.ADMIN,
             });
 
+            const tenantRepository = connection.getRepository(Tenant);
+            const tenant = await tenantRepository.save({
+                name: "Test tenant",
+                address: "Test address",
+            });
+
             const userData = {
                 firstName: "Ramesh",
                 lastName: "Kunwar",
                 email: "ramesh@gmail.com",
                 password: "secret",
-                tenantId: 1,
+                tenantId: tenant.id,
+                role: Roles.MANAGER,
             };
 
             const userRepository = connection.getRepository(User);
@@ -69,13 +77,18 @@ describe("POST /users", () => {
                 sub: "1",
                 role: Roles.ADMIN,
             });
-
+            const tenantRepository = connection.getRepository(Tenant);
+            const tenant = await tenantRepository.save({
+                name: "Test tenant",
+                address: "Test address",
+            });
             const userData = {
                 firstName: "Ramesh",
                 lastName: "Kunwar",
                 email: "ramesh@gmail.com",
                 password: "secret",
-                tenantId: 1,
+                tenantId: tenant.id,
+                role: Roles.MANAGER,
             };
 
             const userRepository = connection.getRepository(User);
@@ -98,7 +111,5 @@ describe("POST /users", () => {
 
             expect(users[0].role).toBe(Roles.MANAGER);
         });
-
-        it.todo("should return 403 if non admin user tries to create a user.");
     });
 });
