@@ -2,14 +2,24 @@ import "reflect-metadata";
 import path from "path";
 
 import express, { NextFunction, Request, Response } from "express";
-import logger from "./config/logger";
+
+import cors from "cors";
+import cookieParser from "cookie-parser";
 import { HttpError } from "http-errors";
+
+import logger from "./config/logger";
 import authRouter from "./routes/auth";
 import tenantRouter from "./routes/tenant";
 import userRouter from "./routes/user";
-import cookieParser from "cookie-parser";
+import { CONFIG } from "./config";
 
 const app = express();
+app.use(
+    cors({
+        origin: [CONFIG.FRONT_END_URL!],
+        credentials: true,
+    }),
+);
 
 app.use(express.json());
 app.use(cookieParser());
