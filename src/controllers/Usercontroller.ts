@@ -1,9 +1,9 @@
 import { Response, NextFunction, Request } from "express";
 import { UserService } from "../services/userService";
-import { CreateUserRequest } from "../types";
-import { Roles } from "../constants";
+import { CreateUserRequest, UserQueryParams } from "../types";
 import { Logger } from "winston";
 import createHttpError from "http-errors";
+import { matchedData } from "express-validator";
 
 export class UserController {
     constructor(
@@ -30,11 +30,20 @@ export class UserController {
     }
 
     async getAll(req: Request, res: Response, next: NextFunction) {
+        const validatedQuery = matchedData(req, { onlyValidData: true }); // extracts only the fields that have passed validation
+
         try {
-            const users = await this.userService.getAll();
+            const [users, count] = await this.userService.getAll(
+                validatedQuery as UserQueryParams,
+            );
 
             this.logger.info("All users have been fetched");
-            res.json(users);
+            res.json({
+                currentPage: validatedQuery.currentPage as number,
+                perPage: validatedQuery.perPage as number,
+                data: users,
+                total: count,
+            });
         } catch (error) {
             next(error);
         }

@@ -46,3 +46,8 @@ export interface LimitedUserData {
     lastName: string;
     role: string;
 }
+
+export interface UserQueryParams {
+    perPage: number;
+    currentPage: number;
+}

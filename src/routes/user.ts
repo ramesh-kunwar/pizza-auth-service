@@ -1,4 +1,5 @@
-import express from "express";
+import express, { Response, NextFunction } from "express";
+import { Request } from "express-jwt";
 import authenticate from "../middlewares/authenticate";
 import { canAccess } from "../middlewares/canAccess";
 import { Roles } from "../constants";
@@ -7,6 +8,7 @@ import { AppDataSource } from "../config/data-source";
 import { User } from "../entity/User";
 import { UserService } from "../services/userService";
 import logger from "../config/logger";
+import listUsersValidator from "../validators/list-users-validator";
 
 const router = express.Router();
 
@@ -23,8 +25,13 @@ router.post(
     (req, res, next) => usercontroller.create(req, res, next),
 );
 
-router.get("/", authenticate, canAccess([Roles.ADMIN]), (req, res, next) =>
-    usercontroller.getAll(req, res, next),
+router.get(
+    "/",
+    authenticate,
+    canAccess([Roles.ADMIN]),
+    listUsersValidator,
+    (req: Request, res: Response, next: NextFunction) =>
+        usercontroller.getAll(req, res, next),
 );
 
 router.patch(
