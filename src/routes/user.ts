@@ -16,14 +16,14 @@ const userService = new UserService(userRepository);
 const usercontroller = new UserController(userService, logger);
 
 router.post(
-    "/users",
+    "/",
     authenticate,
     canAccess([Roles.ADMIN]),
 
     (req, res, next) => usercontroller.create(req, res, next),
 );
 
-router.get("/users", authenticate, canAccess([Roles.ADMIN]), (req, res, next) =>
+router.get("/", authenticate, canAccess([Roles.ADMIN]), (req, res, next) =>
     usercontroller.getAll(req, res, next),
 );
 
