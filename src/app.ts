@@ -53,10 +53,15 @@ app.use("/auth", authRouter);
 app.use("/tenants", tenantRouter);
 app.use("/users", userRouter);
 // global error handler
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+ 
 app.use((err: HttpError, req: Request, res: Response, next: NextFunction) => {
     logger.error(err.message);
     const statusCode = err.statusCode || err.status || 500;
+
+    // Check if response has already been sent
+    if (res.headersSent) {
+        return next(err);
+    }
 
     res.status(statusCode).json({
         errors: [

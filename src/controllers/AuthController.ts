@@ -70,12 +70,14 @@ export class AuthController {
                 sameSite: "strict",
                 maxAge: 1000 * 60 * 60, // 1h
                 httpOnly: true,
+                secure: process.env.NODE_ENV === "production",
             });
             res.cookie("refreshToken", refreshToken, {
                 domain: "localhost",
                 sameSite: "strict",
                 maxAge: 1000 * 60 * 60 * 24 * 365, // 1year
                 httpOnly: true,
+                secure: process.env.NODE_ENV === "production",
             });
 
             res.status(201).json({
@@ -152,12 +154,14 @@ export class AuthController {
                 sameSite: "strict",
                 maxAge: 1000 * 60 * 60, // 1h
                 httpOnly: true,
+                secure: process.env.NODE_ENV === "production",
             });
             res.cookie("refreshToken", refreshToken, {
                 domain: "localhost",
                 sameSite: "strict",
                 maxAge: 1000 * 60 * 60 * 24 * 365, // 1year
                 httpOnly: true,
+                secure: process.env.NODE_ENV === "production",
             });
 
             this.logger.info("Usere Has Been Logged In", { id: user.id });
@@ -170,14 +174,24 @@ export class AuthController {
         }
     }
 
-    async self(req: AuthRequest, res: Response) {
-        const user = await this.userService.findById(Number(req.auth.sub));
+    async self(req: AuthRequest, res: Response, next: NextFunction) {
+        try {
+            const user = await this.userService.findById(Number(req.auth.sub));
 
-        // user?.password = null;
-        res.status(200).json({
-            ...user,
-            password: undefined,
-        });
+            if (!user) {
+                const error = createHttpError(401, "User not found");
+                next(error);
+                return;
+            }
+
+            res.status(200).json({
+                ...user,
+                password: undefined,
+            });
+        } catch (error) {
+            next(error);
+            return;
+        }
     }
 
     async refresh(req: AuthRequest, res: Response, next: NextFunction) {
@@ -214,13 +228,18 @@ export class AuthController {
                 sameSite: "strict",
                 maxAge: 1000 * 60 * 60, // 1h
                 httpOnly: true,
+                secure: process.env.NODE_ENV === "production",
             });
             res.cookie("refreshToken", refreshToken, {
                 domain: "localhost",
                 sameSite: "strict",
                 maxAge: 1000 * 60 * 60 * 24 * 365, // 1year
                 httpOnly: true,
+                secure: process.env.NODE_ENV === "production",
             });
+
+            this.logger.info("Token has been refreshed", { id: user.id });
+            res.status(200).json({ id: user.id });
         } catch (error) {
             next(error);
             return;
@@ -235,8 +254,18 @@ export class AuthController {
 
             this.logger.info("User has been logged out.", req.auth.sub);
 
-            res.clearCookie("accessToken");
-            res.clearCookie("refreshToken");
+            res.clearCookie("accessToken", {
+                domain: "localhost",
+                sameSite: "strict",
+                httpOnly: true,
+                secure: process.env.NODE_ENV === "production",
+            });
+            res.clearCookie("refreshToken", {
+                domain: "localhost",
+                sameSite: "strict",
+                httpOnly: true,
+                secure: process.env.NODE_ENV === "production",
+            });
 
             res.json({});
         } catch (error) {
